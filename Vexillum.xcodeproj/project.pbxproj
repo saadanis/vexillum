@@ -1,0 +1,379 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		93130DF42C3796A6003C746D /* FlagCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93130DF32C3796A6003C746D /* FlagCollection.swift */; };
+		93130DF62C380319003C746D /* FlagDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93130DF52C380319003C746D /* FlagDetailsView.swift */; };
+		93704D792C39346500763DB7 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93704D782C39346500763DB7 /* DataController.swift */; };
+		937A83262C33DED700407F0C /* FlagsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937A83252C33DED700407F0C /* FlagsListView.swift */; };
+		93A7B4602C2FEAC10095F421 /* VexillumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A7B45F2C2FEAC10095F421 /* VexillumApp.swift */; };
+		93A7B4622C2FEAC10095F421 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A7B4612C2FEAC10095F421 /* ContentView.swift */; };
+		93A7B4642C2FEAC10095F421 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93A7B4632C2FEAC10095F421 /* Assets.xcassets */; };
+		93A7B4672C2FEAC10095F421 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93A7B4662C2FEAC10095F421 /* Preview Assets.xcassets */; };
+		93A7B46E2C2FEB5A0095F421 /* DirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A7B46D2C2FEB5A0095F421 /* DirectoryView.swift */; };
+		93A7B4702C2FEBD60095F421 /* Flag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A7B46F2C2FEBD60095F421 /* Flag.swift */; };
+		93A7B4722C2FEC020095F421 /* flags.json in Resources */ = {isa = PBXBuildFile; fileRef = 93A7B4712C2FEC020095F421 /* flags.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		93130DF32C3796A6003C746D /* FlagCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagCollection.swift; sourceTree = "<group>"; };
+		93130DF52C380319003C746D /* FlagDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagDetailsView.swift; sourceTree = "<group>"; };
+		93704D782C39346500763DB7 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		937A83252C33DED700407F0C /* FlagsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagsListView.swift; sourceTree = "<group>"; };
+		93A7B45C2C2FEAC10095F421 /* Vexillum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vexillum.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A7B45F2C2FEAC10095F421 /* VexillumApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VexillumApp.swift; sourceTree = "<group>"; };
+		93A7B4612C2FEAC10095F421 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		93A7B4632C2FEAC10095F421 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		93A7B4662C2FEAC10095F421 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		93A7B46D2C2FEB5A0095F421 /* DirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryView.swift; sourceTree = "<group>"; };
+		93A7B46F2C2FEBD60095F421 /* Flag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flag.swift; sourceTree = "<group>"; };
+		93A7B4712C2FEC020095F421 /* flags.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = flags.json; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		93A7B4592C2FEAC00095F421 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		93A7B4532C2FEAC00095F421 = {
+			isa = PBXGroup;
+			children = (
+				93A7B45E2C2FEAC10095F421 /* Vexillum */,
+				93A7B45D2C2FEAC10095F421 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		93A7B45D2C2FEAC10095F421 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				93A7B45C2C2FEAC10095F421 /* Vexillum.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		93A7B45E2C2FEAC10095F421 /* Vexillum */ = {
+			isa = PBXGroup;
+			children = (
+				93A7B45F2C2FEAC10095F421 /* VexillumApp.swift */,
+				93A7B4612C2FEAC10095F421 /* ContentView.swift */,
+				93A7B46D2C2FEB5A0095F421 /* DirectoryView.swift */,
+				937A83252C33DED700407F0C /* FlagsListView.swift */,
+				93130DF52C380319003C746D /* FlagDetailsView.swift */,
+				93A7B4632C2FEAC10095F421 /* Assets.xcassets */,
+				93A7B4652C2FEAC10095F421 /* Preview Content */,
+				93A7B46F2C2FEBD60095F421 /* Flag.swift */,
+				93130DF32C3796A6003C746D /* FlagCollection.swift */,
+				93A7B4712C2FEC020095F421 /* flags.json */,
+				93704D782C39346500763DB7 /* DataController.swift */,
+			);
+			path = Vexillum;
+			sourceTree = "<group>";
+		};
+		93A7B4652C2FEAC10095F421 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				93A7B4662C2FEAC10095F421 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		93A7B45B2C2FEAC00095F421 /* Vexillum */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93A7B46A2C2FEAC10095F421 /* Build configuration list for PBXNativeTarget "Vexillum" */;
+			buildPhases = (
+				93A7B4582C2FEAC00095F421 /* Sources */,
+				93A7B4592C2FEAC00095F421 /* Frameworks */,
+				93A7B45A2C2FEAC00095F421 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Vexillum;
+			productName = Vexillum;
+			productReference = 93A7B45C2C2FEAC10095F421 /* Vexillum.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		93A7B4542C2FEAC00095F421 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					93A7B45B2C2FEAC00095F421 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 93A7B4572C2FEAC00095F421 /* Build configuration list for PBXProject "Vexillum" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 93A7B4532C2FEAC00095F421;
+			productRefGroup = 93A7B45D2C2FEAC10095F421 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				93A7B45B2C2FEAC00095F421 /* Vexillum */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		93A7B45A2C2FEAC00095F421 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93A7B4672C2FEAC10095F421 /* Preview Assets.xcassets in Resources */,
+				93A7B4642C2FEAC10095F421 /* Assets.xcassets in Resources */,
+				93A7B4722C2FEC020095F421 /* flags.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		93A7B4582C2FEAC00095F421 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93A7B46E2C2FEB5A0095F421 /* DirectoryView.swift in Sources */,
+				93130DF62C380319003C746D /* FlagDetailsView.swift in Sources */,
+				93A7B4622C2FEAC10095F421 /* ContentView.swift in Sources */,
+				93A7B4602C2FEAC10095F421 /* VexillumApp.swift in Sources */,
+				937A83262C33DED700407F0C /* FlagsListView.swift in Sources */,
+				93704D792C39346500763DB7 /* DataController.swift in Sources */,
+				93130DF42C3796A6003C746D /* FlagCollection.swift in Sources */,
+				93A7B4702C2FEBD60095F421 /* Flag.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		93A7B4682C2FEAC10095F421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		93A7B4692C2FEAC10095F421 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		93A7B46B2C2FEAC10095F421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Vexillum/Preview Content\"";
+				DEVELOPMENT_TEAM = P8JY26RP56;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saadanis.Vexillum;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		93A7B46C2C2FEAC10095F421 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Vexillum/Preview Content\"";
+				DEVELOPMENT_TEAM = P8JY26RP56;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saadanis.Vexillum;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		93A7B4572C2FEAC00095F421 /* Build configuration list for PBXProject "Vexillum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93A7B4682C2FEAC10095F421 /* Debug */,
+				93A7B4692C2FEAC10095F421 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		93A7B46A2C2FEAC10095F421 /* Build configuration list for PBXNativeTarget "Vexillum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93A7B46B2C2FEAC10095F421 /* Debug */,
+				93A7B46C2C2FEAC10095F421 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 93A7B4542C2FEAC00095F421 /* Project object */;
+}
