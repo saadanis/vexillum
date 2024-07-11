@@ -18,7 +18,7 @@ class Flag: Codable {
              nickname,
              continent,
              aspect_ratio,
-             colours,
+             colors,
              overview
     }
     
@@ -47,7 +47,7 @@ class Flag: Codable {
         self.nickname = try container.decode(String?.self, forKey: .nickname)
         self.continent = try container.decode([String].self, forKey: .continent)
         self.aspectRatio = try container.decode(String.self, forKey: .aspect_ratio)
-        self.hexes = try container.decode([String].self, forKey: .colours)
+        self.hexes = try container.decode([String].self, forKey: .colors)
         self.overview = try container.decode(String.self, forKey: .overview)
     }
     
@@ -58,7 +58,7 @@ class Flag: Codable {
         try container.encode(nickname, forKey: .nickname)
         try container.encode(continent, forKey: .continent)
         try container.encode(aspectRatio, forKey: .aspect_ratio)
-        try container.encode(hexes, forKey: .colours)
+        try container.encode(hexes, forKey: .colors)
         try container.encode(overview, forKey: .overview)
     }
 }

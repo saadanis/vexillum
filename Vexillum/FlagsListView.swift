@@ -54,10 +54,6 @@ struct FlagsListView: View {
             .padding(.horizontal)
         }
         .navigationTitle(flagCollection.name)
-//        .background {
-//            LinearGradient(colors: [.secondary, .clear], startPoint: .top, endPoint: .bottom)
-//                .ignoresSafeArea()
-//        }
     }
 }
 
@@ -96,29 +92,31 @@ struct FlagListItemView: View {
 }
 
 #Preview {
-
-//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-//    let container = try! ModelContainer(for: FlagCollection.self, configurations: config)
-//    
-//    for flagCollection in VexillumApp.generateFlagCollections() {
-//        container.mainContext.insert(flagCollection)
-//    }
-//        
-//    return NavigationStack {
-//        FlagsListView(flagCollection: VexillumApp.generateFlagCollections()[0])
-//            .modelContainer(container)
-//    }
-    
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: FlagCollection.self, configurations: config)
     
-    for flagCollection in VexillumApp.generateFlagCollections() {
+    do {
+        let url = Bundle.main.url(forResource: "flags", withExtension: "json")
+        let data = try Data(contentsOf: url!)
+        let flags = try JSONDecoder().decode([Flag].self, from: data)
+        
+                
+        let flagCollection = FlagCollection(
+            name: "National Flags",
+            overview: "Explore the world’s nations through their flags, each representing the unique identity and heritage of its country.",
+            symbolName: "globe.europe.africa.fill",
+            hex: "FFF",
+            flags: flags)
+        
         container.mainContext.insert(flagCollection)
-    }
-//    
-
-    let flagCollections = VexillumApp.generateFlagCollections()
-    
-    return FlagsListView(flagCollection: FlagCollection(name: "", overview: "", symbolName: "", hex: ""))
+        
+        return NavigationStack {
+            FlagsListView(flagCollection: flagCollection)
+        }
         .modelContainer(container)
+        
+    } catch {
+        print("Error: \(error.localizedDescription)")
+        return Text("Error")
+    }
 }
