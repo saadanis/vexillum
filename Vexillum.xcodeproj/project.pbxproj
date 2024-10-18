@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		93130DF42C3796A6003C746D /* FlagCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93130DF32C3796A6003C746D /* FlagCollection.swift */; };
 		93130DF62C380319003C746D /* FlagDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93130DF52C380319003C746D /* FlagDetailsView.swift */; };
+		9314E1842C4812CE007285F4 /* CreateNewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E1832C4812CE007285F4 /* CreateNewListView.swift */; };
+		9357AE342C3FD32600174F9A /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9357AE332C3FD32600174F9A /* TestView.swift */; };
 		93704D792C39346500763DB7 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93704D782C39346500763DB7 /* DataController.swift */; };
 		937A83262C33DED700407F0C /* FlagsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937A83252C33DED700407F0C /* FlagsListView.swift */; };
 		93A7B4602C2FEAC10095F421 /* VexillumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A7B45F2C2FEAC10095F421 /* VexillumApp.swift */; };
@@ -23,6 +25,8 @@
 /* Begin PBXFileReference section */
 		93130DF32C3796A6003C746D /* FlagCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagCollection.swift; sourceTree = "<group>"; };
 		93130DF52C380319003C746D /* FlagDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagDetailsView.swift; sourceTree = "<group>"; };
+		9314E1832C4812CE007285F4 /* CreateNewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewListView.swift; sourceTree = "<group>"; };
+		9357AE332C3FD32600174F9A /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		93704D782C39346500763DB7 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		937A83252C33DED700407F0C /* FlagsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagsListView.swift; sourceTree = "<group>"; };
 		93A7B45C2C2FEAC10095F421 /* Vexillum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vexillum.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,12 +74,14 @@
 				93A7B46D2C2FEB5A0095F421 /* DirectoryView.swift */,
 				937A83252C33DED700407F0C /* FlagsListView.swift */,
 				93130DF52C380319003C746D /* FlagDetailsView.swift */,
+				9314E1832C4812CE007285F4 /* CreateNewListView.swift */,
 				93A7B4632C2FEAC10095F421 /* Assets.xcassets */,
 				93A7B4652C2FEAC10095F421 /* Preview Content */,
 				93A7B46F2C2FEBD60095F421 /* Flag.swift */,
 				93130DF32C3796A6003C746D /* FlagCollection.swift */,
 				93A7B4712C2FEC020095F421 /* flags.json */,
 				93704D782C39346500763DB7 /* DataController.swift */,
+				9357AE332C3FD32600174F9A /* TestView.swift */,
 			);
 			path = Vexillum;
 			sourceTree = "<group>";
@@ -164,7 +170,9 @@
 				93A7B4622C2FEAC10095F421 /* ContentView.swift in Sources */,
 				93A7B4602C2FEAC10095F421 /* VexillumApp.swift in Sources */,
 				937A83262C33DED700407F0C /* FlagsListView.swift in Sources */,
+				9314E1842C4812CE007285F4 /* CreateNewListView.swift in Sources */,
 				93704D792C39346500763DB7 /* DataController.swift in Sources */,
+				9357AE342C3FD32600174F9A /* TestView.swift in Sources */,
 				93130DF42C3796A6003C746D /* FlagCollection.swift in Sources */,
 				93A7B4702C2FEBD60095F421 /* Flag.swift in Sources */,
 			);
@@ -309,6 +317,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -339,6 +348,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

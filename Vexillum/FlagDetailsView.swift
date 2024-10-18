@@ -7,12 +7,338 @@
 
 import SwiftUI
 import SwiftData
-import Charts
 
 struct FlagDetailsView: View {
     
+    @Binding var path: NavigationPath
+    
+    var flag: Flag
+    
     @Environment(\.colorScheme) var colorScheme
-//    @Environment(\.presentationMode) var presentationMode
+    
+    @Query(filter: #Predicate<FlagCollection> { flagCollection in
+        flagCollection.name == "Favorites"
+    }) var favoritesList: [FlagCollection]
+    
+    var favorites: FlagCollection {
+        favoritesList[0]
+    }
+    
+    var isFavorited: Bool {
+        favorites.flags.contains(flag)
+    }
+    
+    var backgroundColors: [Color] {
+        
+        let validColors = flag.hexes.filter { Color(hex: $0) != .white && Color(hex: $0) != .black }
+        
+        return validColors.map { hex in
+            Color(hex: hex)
+        }
+    }
+
+    
+    let columns = [GridItem(), GridItem()]
+    
+    @State var imageHeight: CGFloat = 0
+
+    let headerHeight: CGFloat = 500
+    
+    let headerContentHeight: CGFloat = 500
+    
+    let navHeight: CGFloat = 100
+    
+    @State var navIsHidden: Bool = true
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 10) {
+                Section {
+                    Group {
+                        CustomListTextRowView(systemName: "pin.fill", title: "Aspect Ratio", backgroundColors: backgroundColors) {
+                            Text(flag.aspectRatio)
+                        }
+                    }
+                    .padding(.horizontal)
+                } header: {
+                    GeometryReader {
+                        ZStack(alignment: .bottom) {
+                            Color.clear
+                            VStack {
+                                Image(flag.id)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding()
+                                if flag.nickname != nil {
+                                    Text(flag.nickname!)
+                                        .font(.title2Rounded)
+                                        .fontWeight(.semibold)
+                                    Text("Flag of the \(flag.country)")
+                                        .font(.subheadlineRounded)
+                                } else {
+                                    Text("Flag of the \(flag.country)")
+                                        .font(.title2Rounded)
+                                        .fontWeight(.semibold)
+                                }
+                                Text(flag.overview)
+                                    .font(.captionRounded)
+//                                    .foregroundColor()
+                                    .multilineTextAlignment(.center)
+                                    .padding(.top, 10)
+                                    .frame(maxWidth: .infinity)
+                            }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                        }.preference(key: ViewOffsetKey.self,
+                            value: $0.frame(in: .named("area")).maxY)
+                        .opacity((imageHeight-navHeight)/(headerHeight-navHeight))
+                    }
+                    .frame(height: headerHeight, alignment: .bottom)
+                    .onPreferenceChange(ViewOffsetKey.self) { val in
+                        imageHeight = val < 0 ? 0 : val
+                        
+                            withAnimation(.linear) {
+                                if val > navHeight {
+                                    navIsHidden = true
+                                } else
+                                if val < navHeight {
+                                    navIsHidden = false
+                                }
+                            }
+                    }
+                }
+            }
+        }
+        .coordinateSpace(name: "area")
+        .background(alignment: .top) {
+            Image(flag.id).resizable().scaledToFill()
+                .blur(radius: 40)
+                .opacity(0.5*((imageHeight-navHeight)/headerHeight))
+                .scaleEffect(1.5)
+                .frame(height: imageHeight)
+                .clipped()
+                .allowsHitTesting(false)
+        }
+        .ignoresSafeArea(edges: .top)
+//        .navigationTitle("Nav Title")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    if isFavorited {
+                        favorites.flags.removeAll { flag1 in
+                            flag1.id == flag.id
+                        }
+                    } else {
+                        favorites.flags.append(flag)
+                    }
+                }, label: {
+                    Label(
+                        title: { Text("Favorite") },
+                        icon: { Image(systemName: isFavorited ? "heart.fill" : "heart") }
+                    )
+                })
+            }
+        }
+        .toolbarBackground(navIsHidden ? .hidden : .visible)
+    }
+}
+
+
+struct FlagDetailsViewX: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    @Query(filter: #Predicate<FlagCollection> { flagCollection in
+        flagCollection.name == "Favorites"
+    }) var favoritesList: [FlagCollection]
+    
+    var favorites: FlagCollection {
+        favoritesList[0]
+    }
+    
+    var flag: Flag
+    
+    var backgroundColors: [Color] {
+        
+        let validColors = flag.hexes.filter { Color(hex: $0) != .white && Color(hex: $0) != .black }
+        
+        
+        return validColors.map { hex in
+            Color(hex: hex)
+        }
+    }
+
+    
+    let columns = [GridItem(), GridItem()]
+    
+    @State var trs: CGFloat = 1
+    
+    @State var imageHeight: CGFloat = 0
+
+    let headerHeight: CGFloat = 500
+
+    var body: some View {
+        ScrollView {
+            // just remove .sectionHeaders to make it non-sticky
+            LazyVStack(spacing: 0) {
+                Section {
+                    VStack {
+                        VStack {
+                            Image(flag.id)
+                                .resizable()
+                                .scaledToFit()
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .padding()
+                            Group {
+                                if flag.nickname != nil {
+                                    Text(flag.nickname!)
+                                        .font(.title2Rounded)
+                                        .fontWeight(.semibold)
+                                    Text(flag.country)
+                                        .font(.headlineRounded)
+                                        .fontWeight(.regular)
+                                } else {
+                                    Text("Flag of \(flag.country)")
+                                        .font(.title2Rounded)
+                                        .fontWeight(.semibold)
+                                }
+                            }
+                            Text(flag.overview)
+                                .font(.footnoteRounded)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.top, 5)
+                        }
+                        .opacity((imageHeight/500)>1 ? 1 : (imageHeight/500))
+                        .padding(.bottom)
+                        .frame(height: 400, alignment: .bottom)
+//                        .background(.orange)
+                        // >> any content
+//                        ForEach(0..<100) {
+//                            Text("Item \($0)")
+//                                .frame(maxWidth: .infinity, minHeight: 60)
+//                                .background(RoundedRectangle(cornerRadius: 12).fill($0%2 == 0 ? .blue : .yellow))
+//                        }
+                    }
+                    .padding(.horizontal)
+//                    .offset(y:-400)
+                    // << content end
+                } header: {
+                    // here is only calculable part
+                    GeometryReader {
+                        // detect current position of header bottom edge
+                        Color.clear.preference(key: ViewOffsetKey.self,
+                            value: $0.frame(in: .named("area")).maxY)
+                    }
+                    .frame(height: headerHeight)
+                    .onPreferenceChange(ViewOffsetKey.self) {
+                        // prevent image illegal if header is not pinned
+                        imageHeight = $0 < 0 ? 0.001 : $0
+                        print(imageHeight/500)
+                    }
+                }
+                Section {
+                    ForEach(0..<100) {
+                        Text("Item \($0)")
+                            .frame(maxWidth: .infinity, minHeight: 60)
+                            .background(RoundedRectangle(cornerRadius: 12).fill($0%2 == 0 ? .blue : .yellow))
+                    }
+                }
+            }
+        }
+        .coordinateSpace(name: "area")
+        .background(alignment: .top) {
+            Image(flag.id).resizable().scaledToFill()
+                .blur(radius: 40)
+                .saturation(1.3)
+                .opacity(0.5*(imageHeight/500))
+                .scaleEffect(1.5)
+                .frame(height: imageHeight)
+                .clipped()
+                .allowsHitTesting(false)
+        }
+        .ignoresSafeArea(edges: .top)
+//        .navigationTitle(flag.country)
+        .toolbarBackground(Material.ultraThin, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
+//        .clipped()
+    }
+}
+
+struct FlagDetailsView3: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    @Query(filter: #Predicate<FlagCollection> { flagCollection in
+        flagCollection.name == "Favorites"
+    }) var favoritesList: [FlagCollection]
+    
+    var favorites: FlagCollection {
+        favoritesList[0]
+    }
+    
+    var flag: Flag
+    
+    var backgroundColors: [Color] {
+        
+        let validColors = flag.hexes.filter { Color(hex: $0) != .white && Color(hex: $0) != .black }
+        
+//        let validColors = flag.hexes
+        
+        return validColors.map { hex in
+            Color(hex: hex)
+        }
+    }
+
+    
+    let columns = [GridItem(), GridItem()]
+    
+    @State var trs: CGFloat = 1
+    
+    var body: some View {
+        ScrollView {
+            ZStack(alignment: .bottom) {
+                Image(flag.id)
+                    .resizable()
+                    .blur(radius: 50)
+                    .frame(height: 400)
+                    .frame(maxWidth: .infinity)
+                    .scaleEffect(1.2*trs)
+                    .clipped()
+                VStack {
+                    Image(flag.id)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: 300, alignment: .bottom)
+                    
+                    
+                }
+                .padding([.horizontal, .bottom])
+            }
+            ForEach(0..<60) { i in
+                Text("Line \(i)")
+            }
+        }
+        .ignoresSafeArea(edges: .top)
+        .gesture(DragGesture().onChanged { gesture in
+            trs = gesture.translation.height
+        })
+    }
+}
+
+struct FlagDetailsView2: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    @Query(filter: #Predicate<FlagCollection> { flagCollection in
+        flagCollection.name == "Favorites"
+    }) var favoritesList: [FlagCollection]
+    
+    var favorites: FlagCollection {
+        favoritesList[0]
+    }
     
     var flag: Flag
     
@@ -32,12 +358,17 @@ struct FlagDetailsView: View {
     
     var body: some View {
             ScrollView {
+                    ZStack(alignment: .bottom) {
+                        Color.red
+                            .frame(maxHeight: 1000)
+                            .ignoresSafeArea()
+                        Image(flag.id)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity, maxHeight: 300, alignment: .bottom)
+                            .padding(.horizontal)
+                    }
                 VStack(spacing: 10) {
-                    Image(flag.id)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: 300)
-                    
                     Text(flag.overview)
                         .font(.subheadlineRounded)
                         .multilineTextAlignment(.center)
@@ -53,32 +384,22 @@ struct FlagDetailsView: View {
                             Text(flag.nickname!)
                         }
                     }
-                    
-//                    CustomListTextRowView(systemName: "scroll.fill", title: "Design", backgroundColors: backgroundColors) {
-//                        Text(flag.overview)
-//                            .padding(.trailing, 4)
+//                    Commented to build only.
+//                    HStack(spacing:10) {
+//                        CustomListTextRowView(systemName: "pin.fill", title: "Country", backgroundColors: backgroundColors) {
+//                            Text(flag.country)
+//                        }
+//                        CustomListTextRowView(systemName: "globe.europe.africa.fill", title: "Continent", backgroundColors: backgroundColors) {
+//                            Text(flag.continent.joined(separator: ", "))
+//                        }
+//                        
 //                    }
-                    
-                    
-                    HStack(spacing:10) {
-                        CustomListTextRowView(systemName: "pin.fill", title: "Country", backgroundColors: backgroundColors) {
-                            Text(flag.country)
-                        }
-                        CustomListTextRowView(systemName: "globe.europe.africa.fill", title: "Continent", backgroundColors: backgroundColors) {
-                            Text(flag.continent.joined(separator: ", "))
-                        }
-                        
-                    }
-                    .fixedSize(horizontal: false, vertical: true)
-                    
-                    
+//                    .fixedSize(horizontal: false, vertical: true)
                     
                     CustomListTextRowView(systemName: "aspectratio.fill", title: "Aspect Ratio", backgroundColors: backgroundColors) {
                             AspectRatioView(aspectRatio: flag.aspectRatio, imageName: flag.id)
                             .padding(.top, 5)
                     }
-                         
-                    
                     
                     CustomListTextRowView(systemName: "paintpalette.fill", title: "Colors", backgroundColors: backgroundColors) {
                         LazyVGrid(columns: columns, spacing: 10) {
@@ -92,10 +413,6 @@ struct FlagDetailsView: View {
                                     .frame(maxWidth: .infinity)
                                     .background(Color(hex: hex))
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                                //                                .overlay {
-                                //                                    RoundedRectangle(cornerRadius: 10)
-                                //                                        .stroke(.secondary, lineWidth: 1)
-                                //                                }
                             }
                         }
                         .padding(.top, 5)
@@ -105,40 +422,21 @@ struct FlagDetailsView: View {
                 .padding()
             }
             .scrollContentBackground(.hidden)
-            .background(backgroundColors[0].opacity(0.3))
-//            .background {
-//                //            Group { backgroundColors.indices.contains(1) ?
-//                //                backgroundColors[0] : backgroundColors[0]
-//                //            }
-//                RadialGradient(colors: [
-//                    backgroundColors.indices.contains(3) ?
-//                    backgroundColors[1] : backgroundColors[0],
-//                    backgroundColors.indices.contains(3) ?
-//                    backgroundColors[1].opacity(0.5) : backgroundColors[0].opacity(0.5)
-//                ], center: .top, startRadius: 200, endRadius: 500)
-//                .opacity(0.3)
-//                .ignoresSafeArea()
-//            }
-//                    .background {
-//                        Image(flag.id)
-//                            .resizable()
-//                            .blur(radius: 100)
-//                            .scaleEffect(1.4)
-//                            .opacity(0.5)
-//                            .ignoresSafeArea()
-//                    }
+            .background(!backgroundColors.isEmpty ? backgroundColors[0].opacity(0.3) : Color.gray.opacity(0.3))
             .navigationTitle(flag.country)
-            .toolbarBackground(backgroundColors[0].opacity(0.3), for: .navigationBar)
-//            .navigationBarBackButtonHidden()
-//            .toolbar {
-//                ToolbarItem(placement: .navigation) {
-//                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
-//                        Image(systemName: "chevron.left")
-//                            .fontWeight(.semibold)
-////                            .foregroundStyle(backgroundColors[0])
-//                    }
-//                }
-//            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        favorites.flags.append(flag)
+                    }, label: {
+                        Label {
+                            Text("Favorite")
+                        } icon: {
+                            Image(systemName: favorites.flags.contains(flag) ? "heart.fill" : "heart")
+                        }
+                    }).tint(!backgroundColors.isEmpty ? backgroundColors[0] : Color.gray)
+                }
+            }
     }
 }
 
@@ -152,16 +450,17 @@ struct CustomListTextRowView<Content: View>: View {
     @ViewBuilder let content: Content
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             BoxedLabelView(systemName: systemName, title: title, backgroundColors: backgroundColors) {
                 content
                     .frame(maxHeight: .infinity, alignment: .top)
             }
+            Divider()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(15)
-        .background(.thinMaterial)
-        .background(backgroundColors[0])
+//        .background(.thinMaterial)
+//        .background(backgroundColors[0])
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
@@ -216,8 +515,6 @@ struct BoxedLabelView<Content: View>: View {
     }
 }
 
-
-//    .aspectRatio(aspectRatioWidth/aspectRatioHeight, contentMode: .fit)
 struct AspectRatioView2: View {
     
     var aspectRatio: String
@@ -327,10 +624,10 @@ struct AspectRatioView: View {
                             }
                             .onChange(of: geometry.size.width) { oldValue, newValue in
                                 imageWidth = max(oldValue, newValue)
-                                print(oldValue, newValue)
+//                                print(oldValue, newValue)
                             }
                         }
-                    }
+                        }
                     .clipShape(RoundedRectangle(cornerRadius: 0))
                     .overlay(
                         RoundedRectangle(cornerRadius: 0)
@@ -379,19 +676,39 @@ struct AspectRatioView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: FlagCollection.self, configurations: config)
     
-    var flagCollections: [FlagCollection] = []
+    for flagCollection in VexillumApp.generateFlagCollections() {
+        container.mainContext.insert(flagCollection)
+    }
     
     do {
-        let url = Bundle.main.url(forResource: "flags", withExtension: "json")
-        let data = try Data(contentsOf: url!)
-        let flags = try JSONDecoder().decode([Flag].self, from: data)
-        
-        let flag = flags.filter {flag in flag.country == "United Kingdom"}[0]
-        
-        return NavigationStack {
-            FlagDetailsView(flag: flag)
+
+        struct Preview: View {
+            
+            var flag: Flag {
+                do {
+                    let url = Bundle.main.url(forResource: "flags", withExtension: "json")
+                    let data = try Data(contentsOf: url!)
+                    let flags = try JSONDecoder().decode([Flag].self, from: data)
+                    
+                    print(flags)
+                    print(flags.filter {flag in flag.country == "United Kingdom"}[0].country)
+                    
+                    return flags.filter {flag in flag.country == "United Kingdom"}[0]
+                } catch {
+                    return Flag(country: "", id: "", continent: ["Europe"], aspectRatio: "1:2", hexes: ["#f00", "#00f"], overview: "", collections: [])
+                }
+            }
+            
+            @State var path = NavigationPath()
+            var body: some View {
+                NavigationStack {
+                    FlagDetailsView(path: $path, flag: flag)
+                }
+            }
         }
-        .modelContainer(DataController.previewContainer)
+        
+        return Preview()
+            .modelContainer(container)
         
     } catch {
         print("Error: \(error.localizedDescription)")

@@ -21,11 +21,47 @@ struct VexillumApp: App {
                 let descriptor = FetchDescriptor<FlagCollection>()
                 let existingFlagCollection = try container.mainContext.fetchCount(descriptor)
                 
-                guard existingFlagCollection == 0 else { return }
-                
-                for flagCollection in VexillumApp.generateFlagCollections() {
-                    container.mainContext.insert(flagCollection)
+                guard existingFlagCollection == 0 else {
+                    print("Flags already loaded.")
+                    return
                 }
+                
+                // National Flags Insertion.
+                let nationalFlags = VexillumApp.loadNationalFlags()
+                let nationalFlagsCollection = FlagCollection(
+                    name: "National Flags",
+                    overview: "Explore the world’s nations through their flags, each representing the unique identity and heritage of its country.",
+                    symbolName: "globe.europe.africa.fill",
+                    hex: "FFF",
+                    flags: [],
+                    predefined: true
+                )
+                
+                for flag in nationalFlags {
+                    container.mainContext.insert(flag)
+                }
+                
+                container.mainContext.insert(nationalFlagsCollection)
+                nationalFlagsCollection.flags.append(contentsOf: nationalFlags)
+                // End.
+                
+                // Favorites Insertion.
+                let favoritesCollection = FlagCollection(
+                    name: "Favorites",
+                    overview: "Flags you have favorited.",
+                    symbolName: "heart.fill",
+                    hex: "FFF",
+                    flags: [],
+                    predefined: false
+                )
+                container.mainContext.insert(favoritesCollection)
+                
+//                for flagCollection in VexillumApp.generateFlagCollections() {
+//                    for flag in flagCollection.flags {
+//                        container.mainContext.insert(flag)
+//                    }
+//                    container.mainContext.insert(flagCollection)
+//                }
                 
             } catch {
                 print("Failed to pre-seed database.")
@@ -33,6 +69,25 @@ struct VexillumApp: App {
             }
         }
     }
+    
+    static func loadNationalFlags() -> [Flag] {
+        do {
+            guard let url = Bundle.main.url(forResource: "flags", withExtension: "json") else {
+                print("Fatal Error!")
+                fatalError("Failed to find flags.json")
+            }
+            
+            let data = try Data(contentsOf: url)
+            let flags = try JSONDecoder().decode([Flag].self, from: data)
+            
+            return flags
+        } catch {
+            print("Error: \(error)")
+            return []
+        }
+    }
+    
+    static let placeholderColors: [Color] = [.red, .orange, .yellow, .green, .blue, .purple]
     
     static func generateFlagCollections() -> [FlagCollection] {
         do {
@@ -50,7 +105,16 @@ struct VexillumApp: App {
                     overview: "Explore the world’s nations through their flags, each representing the unique identity and heritage of its country.",
                     symbolName: "globe.europe.africa.fill",
                     hex: "FFF",
-                    flags: flags
+                    flags: flags,
+                    predefined: true
+                ),
+                FlagCollection(
+                    name: "Favorites",
+                    overview: "Flags you have favorited.",
+                    symbolName: "heart.fill",
+                    hex: "FFF",
+                    flags: [],
+                    predefined: false
                 )
             ]
         } catch {
@@ -96,6 +160,14 @@ struct GlobalFontDesign: ViewModifier {
 extension View {
     func globalFontDesign(_ fontDesign: Font.Design) -> some View {
         self.modifier(GlobalFontDesign(fontDesign: fontDesign))
+    }
+}
+
+public struct ViewOffsetKey: PreferenceKey {
+    public typealias Value = CGFloat
+    public static var defaultValue = CGFloat.zero
+    public static func reduce(value: inout Value, nextValue: () -> Value) {
+        value += nextValue()
     }
 }
 

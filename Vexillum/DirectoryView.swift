@@ -10,18 +10,23 @@ import SwiftData
 
 struct DirectoryView: View {
     
-    @Query var flagCollections: [FlagCollection]
+    @Binding var path: NavigationPath
+    
+    var flagCollections: [FlagCollection]
+    var title: String
+    
+    var showFavorites: Bool = false
+    
+    @State var isShowingCreateNewListSheet = false
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 Section {
                     ForEach(flagCollections) { flagCollection in
                         DirectoryRowView(flagCollection: flagCollection)
                             .overlay {
-                                NavigationLink {
-                                    FlagsListView(flagCollection: flagCollection)
-                                } label: {
+                                NavigationLink(value: flagCollection) {
                                     EmptyView()
                                 }
                                 .opacity(0)
@@ -31,7 +36,19 @@ struct DirectoryView: View {
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
             }
             .listRowSpacing(12)
-            .navigationTitle("Directory")
+            .navigationTitle(title)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Create", systemImage: "plus") {
+                        isShowingCreateNewListSheet = true
+                    }
+                }
+            }
+            .navigationDestination(for: FlagCollection.self, destination: { flagCollection in
+                FlagsListView(path: $path, flagCollection: flagCollection)
+            })
+            .sheet(isPresented: $isShowingCreateNewListSheet, content: { CreateNewListView()
+            })
         }
     }
 }
@@ -42,45 +59,78 @@ struct DirectoryRowView: View {
     
     var name: String { flagCollection.name }
     
+    var symbolName: String { flagCollection.symbolName }
+    
     var overview: String { flagCollection.overview }
     
     var flags: [Flag] { flagCollection.flags }
     
+    let flagsPerRow = 8
+    let numberOfRows = 4
+    
+    var tileFlags: [Flag] {
+        
+        if flagCollection.flags.count >= flagsPerRow*numberOfRows {
+            return flagCollection.flags
+        } else if flagCollection.flags.count == 0 {
+            return flagCollection.flags
+        }
+        
+        var tileFlags: [Flag] = []
+        
+        while tileFlags.count < flagsPerRow*numberOfRows {
+            tileFlags.append(contentsOf: flagCollection.flags)
+        }
+        
+        return tileFlags
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ZStack {
-                FlagsTileView(flags: flags.shuffled(), flagsPerRow: 8, numberOfRows: 4, flagHeight: 40, spacing: 10)
+            if !flags.isEmpty {
+                FlagsTileView(flags: tileFlags.shuffled(), flagsPerRow: flagsPerRow, numberOfRows: numberOfRows, flagHeight: 40, spacing: 10)
                     .padding(.bottom)
             }
             VStack(alignment: .leading, spacing: 5) {
-                Divider()
-                    .overlay(.primary)
-                Text(name)
-                    .font(.title2Rounded)
-                    .fontWeight(.semibold)
-                HStack {
-                    Label("Available", systemImage: "checkmark")
-                        .padding(5)
-                        .labelStyle(LabelStyleWithSpacing(spacing: 5))
-                        .font(.captionRounded)
-                        .foregroundStyle(.secondary)
-                        .background(.ultraThinMaterial.opacity(0.8))
-                        .background { Color.green.opacity(0.35) }
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                    Label("\(flags.count)", systemImage: "rectangle.on.rectangle.angled")
-                        .padding(5)
-                        .labelStyle(LabelStyleWithSpacing(spacing: 5))
-                        .font(.captionRounded)
-                        .foregroundStyle(.secondary)
-                        .background(.ultraThinMaterial.opacity(0.8))
-                        .background {
-                            Image(flags.shuffled().first!.id)
-                                .resizable()
-                                .blur(radius: 5)
-                                .opacity(0.35)
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                if !flags.isEmpty {
+                    Divider()
+                        .overlay(.primary)
+                        .padding(.bottom, 10)
                 }
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(name)
+                            .font(.title2Rounded)
+                            .fontWeight(.semibold)
+                        HStack {
+                            if(flagCollection.predefined) {
+                                Label("Available", systemImage: "checkmark")
+                                    .padding(5)
+                                    .labelStyle(LabelStyleWithSpacing(spacing: 5))
+                                    .font(.captionRounded)
+                                    .foregroundStyle(.secondary)
+                                    .background(.ultraThinMaterial.opacity(0.8))
+                                    .background { Color.green.opacity(0.35) }
+                                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                            }
+                            Label("\(flags.count)", systemImage: "rectangle.on.rectangle.angled")
+                                .padding(5)
+                                .labelStyle(LabelStyleWithSpacing(spacing: 5))
+                                .font(.captionRounded)
+                                .foregroundStyle(.secondary)
+                                .background(.ultraThinMaterial.opacity(0.8))
+                                .background {
+                                    if !flags.isEmpty {
+                                        Image(flags.shuffled().first!.id)
+                                            .resizable()
+                                            .blur(radius: 5)
+                                            .opacity(0.35)
+                                    } else {
+                                        Color.gray.opacity(0.35)
+                                    }
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
                 Text(overview)
                     .font(.bodyRounded)
                     .foregroundStyle(.secondary)
@@ -157,26 +207,43 @@ struct AnimatingHStackRowView: View {
     
     @State private var offset: CGFloat = 0
     @State private var speed: CGFloat = CGFloat.random(in: 0.07..<0.13)
-    private let timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
+    
+
+    
+//    Commented for testing performance.
+//    private let timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
         
     var body: some View {
         HStack(spacing: spacing) {
             ForEach(0..<flagsPerRow, id:\.self) { j in
-                Image(chosenFlags[i*flagsPerRow+j].id)
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: chosenFlags[i*flagsPerRow+j].id != "Q159741" ? 5 : 0))
-                    .frame(height: flagHeight)
-                    .shadow(radius: 5)
+                Group {
+                    if chosenFlags[i*flagsPerRow+j].id.hasPrefix("placeholder") {
+                        let flagWidthString = chosenFlags[i*flagsPerRow+j].id.replacingOccurrences(of: "placeholder_", with: "")
+                        let n = NumberFormatter().number(from: flagWidthString)!
+                        let flagWidth = CGFloat(truncating: n)
+//                        VexillumApp.placeholderColors.shuffled().first!
+                        Color.clear
+                            .frame(width: flagHeight * flagWidth)
+                            .overlay(.ultraThinMaterial)
+                    } else {
+                        Image(chosenFlags[i*flagsPerRow+j].id)
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: chosenFlags[i*flagsPerRow+j].id != "Q159741" ? 5 : 0))
+                .frame(height: flagHeight)
+                .shadow(radius: 5)
             }
         }
         .offset(x: offset)
-        .onReceive(timer) { _ in
-            if speed > 0 {
-                offset = i%2 == 0 ? offset - speed : offset + speed
-                speed -= 0.0001
-            }
-        }
+//        Commented for testing performance.
+//        .onReceive(timer) { _ in
+//            if speed > 0 {
+//                offset = i%2 == 0 ? offset - speed : offset + speed
+//                speed -= 0.0001
+//            }
+//        }
         .onAppear {
             offset = 0
             speed = CGFloat.random(in: 0.07..<0.13)
@@ -206,15 +273,25 @@ struct SquishedHorizontalFlagBackgroundView: View {
     
     var numberOfFlags = 5
     
+    var numberOfPossibleFlags: Int {
+        min(numberOfFlags, flags.count)
+    }
+    
     var startIndex: Int {
-        Int.random(in: 0..<flags.count - numberOfFlags)
+        if flags.count <= numberOfFlags {
+            return 0
+        } else {
+            return Int.random(in: 0..<flags.count - numberOfFlags)
+        }
     }
     
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(0..<numberOfFlags, id: \.self) { i in
-                Image(flags[startIndex + i].id)
-                    .resizable()
+            if !flags.isEmpty {
+                ForEach(0..<numberOfPossibleFlags, id: \.self) { i in
+                    Image(flags[startIndex + i].id)
+                        .resizable()
+                }
             }
         }
     }
@@ -268,6 +345,13 @@ struct LabelStyleWithSpacing: LabelStyle {
         container.mainContext.insert(flagCollection)
     }
     
-    return DirectoryView()
+    struct Preview: View {
+        @State var path = NavigationPath()
+        var body: some View {
+            DirectoryView(path: $path, flagCollections: VexillumApp.generateFlagCollections(), title: "Directory")
+        }
+    }
+    
+    return Preview()
         .modelContainer(container)
 }

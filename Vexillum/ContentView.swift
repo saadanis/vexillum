@@ -9,27 +9,164 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+
+        @Query(filter: #Predicate<FlagCollection> { flagCollection in
+            flagCollection.predefined
+        }) var predefinedFlagCollections: [FlagCollection]
     
-    @State private var selectedTab : SelectedTab = .directory
+        @Query(filter: #Predicate<FlagCollection> { flagCollection in
+            !flagCollection.predefined
+        }) var customFlagCollections: [FlagCollection]
     
-    init() {
-        UINavigationBar.appearance().largeTitleTextAttributes = [.font: VexillumApp.getTitleFont(.largeTitle)]
-        UINavigationBar.appearance().titleTextAttributes = [.font : VexillumApp.getTitleFont(.headline)]
-    }
+        init() {
+            UINavigationBar.appearance().largeTitleTextAttributes = [.font: VexillumApp.getTitleFont(.largeTitle)]
+            UINavigationBar.appearance().titleTextAttributes = [.font : VexillumApp.getTitleFont(.headline)]
+        }
     
+    
+    @State private var selectedTab: Tab = .directory
+    
+    @State private var directoryPath = NavigationPath()
+    @State private var listsPath = NavigationPath()
+    @State private var searchPath = NavigationPath()
+    @State private var quizzesPath = NavigationPath()
+    @State private var settingsPath = NavigationPath()
+
     var body: some View {
-        TabView(selection: $selectedTab.animation()) {
-            DirectoryView()
-                .tabItemTag(systemName: "text.book.closed", tab: .directory, currentTab: selectedTab, tabName: "Directory")
+        ZStack {
+            TabView(selection: $selectedTab) {
+                
+                DirectoryView(path: $directoryPath, flagCollections: predefinedFlagCollections, title: "Directory")
+                    .tag(Tab.directory)
+
+                DirectoryView(path: $listsPath, flagCollections: customFlagCollections, title: "Lists")
+                    .tag(Tab.lists)
+                
+                Text("")
+                    .tag(Tab.search)
+                
+                Text("")
+                    .tag(Tab.quizzes)
+                
+                Text("")
+                    .tag(Tab.settings)
+            }
             
-            Text("Lists")
-                .tabItemTag(systemName: "star", tab: .lists, currentTab: selectedTab, tabName: "Lists")
-            
-            Text("Quizzes")
-                .tabItemTag(systemName: "puzzlepiece", tab: .quizzes, currentTab: selectedTab, tabName: "Quizzes")
-            
-            Text("Preferences")
-                .tabItemTag(systemName: "gearshape", tab: .preferences, currentTab: selectedTab, tabName: "Preferences")
+            CustomTabView(selectedTab: $selectedTab) {
+                if selectedTab == .directory {
+                    directoryPath = NavigationPath()
+                } else if selectedTab == .lists {
+                    listsPath = NavigationPath()
+                } else if selectedTab == .search {
+                    searchPath = NavigationPath()
+                } else if selectedTab == .quizzes {
+                    quizzesPath = NavigationPath()
+                } else if selectedTab == .settings {
+                    settingsPath = NavigationPath()
+                }
+            }
+        }
+    }
+}
+
+struct CustomTabView: View {
+    @Binding var selectedTab: Tab
+    let action: () -> Void
+    
+    @State var effects: [Tab : Bool] = [
+        .directory : false,
+        .lists : false,
+        .search : false,
+        .quizzes : false,
+        .settings : false,
+    ]
+    
+    @State var colors: [Tab : Color] = [
+        .directory : .red,
+        .lists : .green,
+        .search : .red,
+        .quizzes : .orange,
+        .settings : .pink,
+    ]
+
+    var body: some View {
+        VStack {
+            Spacer()
+            HStack(spacing: 0) {
+                ForEach(Tab.allCases, id: \.self) { tab in
+                    Button {
+                        if selectedTab == tab {
+                            action()
+                        }
+                        selectedTab = tab
+                        print(selectedTab)
+                        effects[selectedTab]?.toggle()
+                    } label: {
+                        VStack(alignment: .center) {
+//                            Group {
+//                                if tab.rawValue == "magnifyingglass" {
+//                                    Image(systemName:
+//                                            "\(selectedTab == tab ? "sparkle." : "")\(tab.rawValue)")
+//                                    .foregroundStyle(selectedTab == tab ?
+//                                                     LinearGradient(colors: [.purple, .accentColor], startPoint: .topLeading, endPoint: .bottomTrailing) :
+//                                                        LinearGradient(colors: [.secondary], startPoint: .topLeading, endPoint: .bottomTrailing)
+//                                    )
+//                                } else {
+                                    Image(systemName: tab.rawValue)
+                                        .symbolVariant(selectedTab == tab ? .fill : .none)
+                                        .foregroundStyle(selectedTab == tab ? Color.accentColor : .secondary
+                                        )
+                                        .frame(height: 49, alignment: .center)
+                                        .frame(maxWidth: .infinity)
+                                        .contentShape(Rectangle())
+//                                }
+//                            }
+//                            .background(.orange)
+                            .imageScale(.large)
+                            .fontWeight(.bold)
+//                            .padding(.vertical, 11)
+//                            .symbolEffect(.bounce.wholeSymbol, options: .speed(1.5), value: effects[tab])
+                            .sensoryFeedback(.selection, trigger: effects[tab])
+//                            .background(.clear)
+                        }
+                    }
+                    .symbolEffect(.wiggle.byLayer, value: effects[tab])
+                    .buttonStyle(NoFadeButtonStyle())
+                }
+//                .background(.red)
+            }
+//            .background(.purple.opacity(0.1))
+        }
+    }
+}
+
+struct NoFadeButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(1.0)
+//            .symbolEffect(.bounce.wholeSymbol.down, value: configuration.isPressed)
+    }
+}
+
+enum Tab: String, CaseIterable {
+    case directory = "text.book.closed"
+    case lists = "star.square.on.square"
+    case search = "magnifyingglass"
+    case quizzes = "puzzlepiece.extension"
+    case settings = "gearshape"
+
+    var text: String {
+        switch self {
+        case .directory:
+            "Directory"
+        case .lists:
+            "Lists"
+        case .search:
+            "Search"
+        case .quizzes:
+            "Quizzes"
+        case .settings:
+            "Settings"
         }
     }
 }

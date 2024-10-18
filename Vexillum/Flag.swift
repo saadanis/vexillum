@@ -19,7 +19,8 @@ class Flag: Codable {
              continent,
              aspect_ratio,
              colors,
-             overview
+             overview,
+             collections
     }
     
     var country: String
@@ -30,7 +31,9 @@ class Flag: Codable {
     var hexes: [String]
     var overview: String
     
-    init(country: String, id: String, nickname: String? = nil, continent: [String], aspectRatio: String, hexes: [String], overview: String) {
+    var collections: [FlagCollection]
+    
+    init(country: String, id: String, nickname: String? = nil, continent: [String], aspectRatio: String, hexes: [String], overview: String, collections: [FlagCollection]) {
         self.country = country
         self.id = id
         self.nickname = nickname
@@ -38,6 +41,7 @@ class Flag: Codable {
         self.aspectRatio = aspectRatio
         self.hexes = hexes
         self.overview = overview
+        self.collections = collections
     }
     
     required init(from decoder: Decoder) throws {
@@ -49,6 +53,7 @@ class Flag: Codable {
         self.aspectRatio = try container.decode(String.self, forKey: .aspect_ratio)
         self.hexes = try container.decode([String].self, forKey: .colors)
         self.overview = try container.decode(String.self, forKey: .overview)
+        self.collections = []
     }
     
     func encode(to encoder: Encoder) throws {
@@ -60,5 +65,6 @@ class Flag: Codable {
         try container.encode(aspectRatio, forKey: .aspect_ratio)
         try container.encode(hexes, forKey: .colors)
         try container.encode(overview, forKey: .overview)
+//        try container.encode(collections, forKey: .collections)
     }
 }
